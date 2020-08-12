@@ -44,7 +44,7 @@ namespace Website_StorePhone3.Controllers
         }
         public ActionResult SingleBlog()
         {
-            phone_storeEntities phone_Store = new phone_storeEntities();
+            
            
             return View();
         }

@@ -16,7 +16,6 @@ namespace Website_StorePhone3.Models.db
     {
         public productdetail()
         {
-            this.importproductdetails = new HashSet<importproductdetail>();
             this.orderdetails = new HashSet<orderdetail>();
             this.storages = new HashSet<storage>();
         }
@@ -32,7 +31,6 @@ namespace Website_StorePhone3.Models.db
         public System.DateTime updateDate { get; set; }
     
         public virtual color color { get; set; }
-        public virtual ICollection<importproductdetail> importproductdetails { get; set; }
         public virtual ICollection<orderdetail> orderdetails { get; set; }
         public virtual product product { get; set; }
         public virtual spec spec { get; set; }

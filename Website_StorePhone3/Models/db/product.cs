@@ -18,7 +18,6 @@ namespace Website_StorePhone3.Models.db
         {
             this.comments = new HashSet<comment>();
             this.discounts = new HashSet<discount>();
-            this.importproducts = new HashSet<importproduct>();
             this.productdetails = new HashSet<productdetail>();
             this.vouchers = new HashSet<voucher>();
             this.vouchers1 = new HashSet<voucher>();
@@ -38,7 +37,6 @@ namespace Website_StorePhone3.Models.db
         public virtual brand brand { get; set; }
         public virtual ICollection<comment> comments { get; set; }
         public virtual ICollection<discount> discounts { get; set; }
-        public virtual ICollection<importproduct> importproducts { get; set; }
         public virtual item item { get; set; }
         public virtual ICollection<productdetail> productdetails { get; set; }
         public virtual ICollection<voucher> vouchers { get; set; }

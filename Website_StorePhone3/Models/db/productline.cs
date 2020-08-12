@@ -12,20 +12,14 @@ namespace Website_StorePhone3.Models.db
     using System;
     using System.Collections.Generic;
     
-    public partial class supplier
+    public partial class productline
     {
-        public supplier()
-        {
-            this.importproducts = new HashSet<importproduct>();
-        }
-    
         public int id { get; set; }
         public string name { get; set; }
-        public string address { get; set; }
-        public int activeFlag { get; set; }
-        public System.DateTime createDate { get; set; }
-        public System.DateTime updateDate { get; set; }
+        public Nullable<int> brandId { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> createUpdate { get; set; }
     
-        public virtual ICollection<importproduct> importproducts { get; set; }
+        public virtual brand brand { get; set; }
     }
 }
