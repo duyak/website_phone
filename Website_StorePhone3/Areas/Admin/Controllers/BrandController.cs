@@ -64,6 +64,8 @@ namespace Website_StorePhone3.Areas.Admin.Controllers
             db.brands.Add(brands);
             db.SaveChanges();
             return RedirectToAction("Index");
+
+            //them
            
         }
     }    
