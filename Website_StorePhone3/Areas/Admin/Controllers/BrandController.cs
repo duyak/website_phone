@@ -22,30 +22,25 @@ namespace Website_StorePhone3.Areas.Admin.Controllers
             List<brand> brands = db.brands.ToList();
             return View(brands);
         }
-        public ActionResult saveBrands(string name,HttpPostedFileBase logo)
+        public ActionResult saveBrand(string nameBrand,string logoBrand)
         {
-            brand model = new brand();
-            string result = "Lỗi !Thêm không thành công!!!";
-            if (name != null && logo.ContentLength > 0)
+            string result = "Error! brand Is Not Complete!";
+            if(nameBrand != null && logoBrand != null)
             {
-
-
-                model.name = name;
-                model.createDate = DateTime.Now;
-                model.updateDate = DateTime.Now;
+                brand model = new brand();
+                model.name = nameBrand;
+                model.logo = logoBrand;
                 model.activeFlag = 1;
                 model.status = 1;
-                string filename = System.IO.Path.GetFileName(logo.FileName);
-                string urlLogo = Server.MapPath("~/Image/" + filename);
-                logo.SaveAs(urlLogo);
-                model.logo = "Image/" + urlLogo;
+                model.createDate = DateTime.Now;
                 db.brands.Add(model);
                 db.SaveChanges();
-                result = "Thành công !!!";
+                result = "Success! Order Is Complete!";
             }
             return Json(result, JsonRequestBehavior.AllowGet);
-          
+
         }
+       
         public ActionResult addBrand()
         {
             return View();

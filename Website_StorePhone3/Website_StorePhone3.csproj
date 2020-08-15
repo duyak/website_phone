@@ -305,6 +305,7 @@
     <Content Include="Content\admin\assets\images\placeholder\255x150.png" />
     <Content Include="Content\admin\assets\images\placeholder\530x270.png" />
     <Content Include="Content\admin\assets\images\placeholder\550x280.png" />
+    <Content Include="Content\admin\assets\jquery.min.js" />
     <Content Include="Content\admin\assets\js\ace-editable.min.js" />
     <Content Include="Content\admin\assets\js\ace-elements.min.js" />
     <Content Include="Content\admin\assets\js\ace-extra.min.js" />

@@ -4,12 +4,11 @@
     Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
 }
 @model IEnumerable<Website_StorePhone3.Models.db.brand>
-
-
+ 
 <div class="main-content">
     <div class="main-content-inner">
         <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-            <ul class="breadcrumb">
+            <ul class="breadcrumb"> 
                 <li>
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="index.html">Trang chủ</a>
@@ -65,7 +64,7 @@
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Logo: </label>
 
                                 <div class="col-sm-9">
-                                    <input type="file" name="logoBrand" id="logoBrand" class="col-xs-10" />
+                                    <input type="text" name="logoBrand" id="logoBrand" placeholder="Vui lòng nhập logo" class="col-xs-10" />
                                 </div>
                             </div>
                             <div class="space-4"></div>
@@ -93,7 +92,7 @@
 
                             <div class="clearfix form-actions">
                                 <div class="col-md-offset-3 col-md-9">
-                                    <button id="saveBrands" class="btn btn-info" type="button">
+                                    <button id="saveBrand" class="btn btn-info" type="submit">
                                         <i class="ace-icon fa fa-check bigger-110"></i>
                                         Submit
                                     </button>
@@ -196,8 +195,7 @@
                                                                 </script>
                                                             </a>
                                                         </div>
-                                                        //asd
-
+                                                       
                                                     </td>
                                                 </tr>
 
@@ -223,19 +221,20 @@
         $("#newOrderModal").modal();
     }
 </script>
-
 <script type="text/javascript">
     //Add Multiple Order.
     $("#addToList").click(function (e) {
         e.preventDefault();
 
-        if ($.trim($("#nameBrand").val()) == "" || $.trim($("#logoBrand").val())) return;
+        if ($.trim($("#nameBrand").val()) == "" || $.trim($("#logoBrand").val()) == "")
+            return;
 
         var nameBrand = $("#nameBrand").val(),
             logoBrand = $("#logoBrand").val(),
+    
             detailsTableBody = $("#detailsTable tbody");
 
-        var brandItem = '<tr><td>' + nameBrand + '</td><td>' + logoBrand + '</td><td><a data-itemId="0" href="#" class="deleteItem">Remove</a></td></tr>';
+        var brandItem = '<tr><td>' + '</td><td>' + '</td><td>' +  nameBrand + '</td><td>' + logoBrand + '</td><td><a data-itemId="0" href="#" class="deleteItem">Xóa</a></td></tr>';
         detailsTableBody.append(brandItem);
         clearItem();
     });
@@ -243,7 +242,6 @@
     function clearItem() {
         $("#nameBrand").val('');
         $("#logoBrand").val('');
-       
     }
     // After Add A New Order In The List, If You Want, You Can Remove It.
     $(document).on('click', 'a.deleteItem', function (e) {
@@ -256,12 +254,12 @@
         }
     });
     //After Click Save Button Pass All Data View To Controller For Save Database
-    function saveOrder(data) {
+    function saveBrand(data) {
         return $.ajax({
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             type: 'POST',
-            url: "/Brand/saveBrands",
+            url: "/Brand/saveBrand",
             data: data,
             success: function (result) {
                 alert(result);
@@ -273,7 +271,7 @@
         });
     }
     //Collect Multiple Order List For Pass To Controller
-    $("#saveBrands").click(function (e) {
+    $("#saveBrand").click(function (e) {
         e.preventDefault();
 
         var brandArr = [];
@@ -283,8 +281,8 @@
             brandArr.push({
                 nameBrand: $(this).find('td:eq(0)').html(),
                 logoBrand: $(this).find('td:eq(1)').html(),
-                nameBrand: $(this).find('td:eq(2)').html(),
-                nameBrand: $(this).find('td:eq(3)').html()
+                logoBrand: $(this).find('td:eq(2)').html(),
+                logoBrand: $(this).find('td:eq(3)').html()
             });
         });
 
@@ -295,13 +293,13 @@
             brand: brandArr
         });
 
-        $.when(saveBrands(data)).then(function (response) {
+        $.when(saveBrand(data)).then(function (response) {
             console.log(response);
         }).fail(function (err) {
             console.log(err);
         });
     });
-
 </script>
-    
+
+
 
