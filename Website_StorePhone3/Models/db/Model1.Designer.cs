@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\DoAn_ASP_NET_Store\Website_StorePhone3\Website_StorePhone3\Website_StorePhone3\Models\db\Model1.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\DoAn_ASP_NET_Store\github\website_phone\Website_StorePhone3\Models\db\Model1.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

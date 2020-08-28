@@ -4,11 +4,12 @@
     Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
 }
 @model IEnumerable<Website_StorePhone3.Models.db.brand>
- 
+
+
 <div class="main-content">
     <div class="main-content-inner">
         <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-            <ul class="breadcrumb"> 
+            <ul class="breadcrumb">
                 <li>
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="index.html">Trang chủ</a>
@@ -152,7 +153,7 @@
                                         @foreach (var item in Model)
                                         {
 
-                                            if (item.activeFlag==1)
+                                            if (item.activeFlag == 1)
                                             {
 
 
@@ -195,7 +196,7 @@
                                                                 </script>
                                                             </a>
                                                         </div>
-                                                       
+
                                                     </td>
                                                 </tr>
 
@@ -216,6 +217,14 @@
     </div>
 </div><!-- /.main-content -->
 
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#dynamic-table').DataTable();
+    });
+
+</script>
+
 <script type="text/javascript">
     function addBrand() {
         $("#newOrderModal").modal();
@@ -231,10 +240,10 @@
 
         var nameBrand = $("#nameBrand").val(),
             logoBrand = $("#logoBrand").val(),
-    
+
             detailsTableBody = $("#detailsTable tbody");
 
-        var brandItem = '<tr><td>' + '</td><td>' + '</td><td>' +  nameBrand + '</td><td>' + logoBrand + '</td><td><a data-itemId="0" href="#" class="deleteItem">Xóa</a></td></tr>';
+        var brandItem = '<tr><td>' + '</td><td>' + '</td><td>' + nameBrand + '</td><td>' + logoBrand + '</td><td><a data-itemId="0" href="#" class="deleteItem">Xóa</a></td></tr>';
         detailsTableBody.append(brandItem);
         clearItem();
     });
@@ -302,4 +311,12 @@
 </script>
 
 
+
+@*<script type="text/javascript">
+        $(document).ready(function () {
+            $('#dtBasicExample').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+*@
 

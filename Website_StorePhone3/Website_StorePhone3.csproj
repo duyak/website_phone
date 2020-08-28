@@ -372,6 +372,7 @@
     <Content Include="Content\admin\assets\js\tree.min.js" />
     <Content Include="Content\admin\assets\js\wizard.min.js" />
     <Content Include="Content\admin\assets\swf\flashExport.swf" />
+    <Content Include="Content\admin\bootstrap.css" />
     <Content Include="Content\admin\ckeditor\adapters\jquery.js" />
     <Content Include="Content\admin\ckeditor\build-config.js" />
     <Content Include="Content\admin\ckeditor\ckeditor.js" />
@@ -1374,6 +1375,7 @@
     <Content Include="Content\admin\ckfinder\_samples\skin_v1.html" />
     <Content Include="Content\admin\ckfinder\_samples\standalone.html" />
     <Content Include="Content\admin\ckfinder\_samples\standalone_v1.html" />
+    <Content Include="Content\admin\dataTables.bootstrap4.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
