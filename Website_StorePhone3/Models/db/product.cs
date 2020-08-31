@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Website_StorePhone3.Models.db
+namespace Website_StorePhone3.Models.DB
 {
     using System;
     using System.Collections.Generic;
@@ -26,6 +26,7 @@ namespace Website_StorePhone3.Models.db
         public int id { get; set; }
         public int itemId { get; set; }
         public int brandId { get; set; }
+        public Nullable<int> catagoryId { get; set; }
         public string name { get; set; }
         public string code { get; set; }
         public string description { get; set; }
@@ -35,9 +36,9 @@ namespace Website_StorePhone3.Models.db
         public System.DateTime updateDate { get; set; }
     
         public virtual brand brand { get; set; }
+        public virtual category category { get; set; }
         public virtual ICollection<comment> comments { get; set; }
         public virtual ICollection<discount> discounts { get; set; }
-        public virtual item item { get; set; }
         public virtual ICollection<productdetail> productdetails { get; set; }
         public virtual ICollection<voucher> vouchers { get; set; }
         public virtual ICollection<voucher> vouchers1 { get; set; }

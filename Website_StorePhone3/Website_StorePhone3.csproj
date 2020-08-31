@@ -158,84 +158,78 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeAdminController.cs" />
-    <Compile Include="Areas\Models\BrandModel.cs" />
+    <Compile Include="Areas\Models\CategoryModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\auth.cs">
+    <Compile Include="Models\DB\auth.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\brand.cs">
+    <Compile Include="Models\DB\brand.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\category.cs">
+    <Compile Include="Models\DB\category.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\color.cs">
+    <Compile Include="Models\DB\color.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\comment.cs">
+    <Compile Include="Models\DB\comment.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\discount.cs">
+    <Compile Include="Models\DB\discount.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\item.cs">
+    <Compile Include="Models\DB\menu.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\menu.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\db\Model1.Context.cs">
+    <Compile Include="Models\DB\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\Model1.cs">
+    <Compile Include="Models\DB\Model1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\Model1.Designer.cs">
+    <Compile Include="Models\DB\Model1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\order.cs">
+    <Compile Include="Models\DB\order.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\orderdetail.cs">
+    <Compile Include="Models\DB\orderdetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\product.cs">
+    <Compile Include="Models\DB\product.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\productdetail.cs">
+    <Compile Include="Models\DB\productdetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\productline.cs">
+    <Compile Include="Models\DB\role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\role.cs">
+    <Compile Include="Models\DB\roleuser.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\roleuser.cs">
+    <Compile Include="Models\DB\spec.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\spec.cs">
+    <Compile Include="Models\DB\specdetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\specdetail.cs">
+    <Compile Include="Models\DB\storage.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\storage.cs">
+    <Compile Include="Models\DB\user.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\db\user.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\db\voucher.cs">
+    <Compile Include="Models\DB\voucher.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1581,12 +1575,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\db\Model1.Context.tt">
+    <Content Include="Models\DB\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\db\Model1.tt">
+    <Content Include="Models\DB\Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
@@ -1673,15 +1667,16 @@
     <Content Include="Areas\Admin\Views\HomeAdmin\profile_product.cshtml" />
     <Content Include="Areas\Admin\Views\HomeAdmin\profile_supplier.cshtml" />
     <Content Include="Areas\Admin\Views\HomeAdmin\profile_users.cshtml" />
-    <Content Include="Areas\Admin\Views\Brand\addBrand.cshtml" />
-    <EntityDeploy Include="Models\db\Model1.edmx">
+    <EntityDeploy Include="Models\DB\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\db\Model1.edmx.diagram">
+    <Content Include="Models\DB\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Brand\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Brand\addBrand.cshtml" />
+    <Content Include="Areas\Admin\Views\Brand\edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1713,13 +1708,15 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\SingleBlog.cshtml" />
     <Content Include="Views\Home\SingleProduct.cshtml" />
+    <Content Include="Views\Home\ListPhone.cshtml" />
+    <Content Include="Views\Home\ListLapTop.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Content\admin\ckfinder\upload\" />
     <Folder Include="Content\client\img\blog\latest-post\" />
-    <Folder Include="Image\" />
+    <Folder Include="Image\logo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

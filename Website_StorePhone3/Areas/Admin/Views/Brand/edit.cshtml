@@ -1,9 +1,9 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "edit";
     Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
 }
-@model IEnumerable<Website_StorePhone3.Models.DB.brand>
+@model Website_StorePhone3.Models.DB.brand
 <ul class="nav nav-list">
     <li class="">
         <a href="index.html">
@@ -217,7 +217,7 @@
                 <li>
                     <a href="index.html">Quản lý nhà sản xuất</a>
                 </li>
-                <li class="active">Thông tin nhà sản xuất</li>
+                <li class="active">Sửa nhà sản xuất</li>
             </ul><!-- /.breadcrumb -->
 
             <div class="nav-search" id="nav-search">
@@ -235,122 +235,71 @@
 
             <div class="page-header">
                 <h1>
-                    Nhà sản xuất
+                    Quản lý nhà sản xuất
                     <small>
                         <i class="ace-icon fa fa-angle-double-right"></i>
-                        Thông tin các nhà sản xuất
+                        Sửa nhà sản xuất
                     </small>
                 </h1>
             </div><!-- /.page-header -->
 
             <div class="row">
                 <div class="col-xs-12">
-                    <!-- PAGE CONTENT BEGINS -->
+                    @using (Html.BeginForm("Edit",
+                            "Brand",
+                            FormMethod.Post,
+                            new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
 
-                    <div class="row">
-                        <div class="col-xs-12">
+                        
+                            <!-- PAGE CONTENT BEGINS -->
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="name">Tên nhà sản xuất: </label>
 
-                            <!-- div.table-responsive -->
-                            <!-- div.dataTables_borderWrap -->
-                            <div>
-                                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th class="center">
-                                                <label class="pos-rel">
-                                                    <input type="checkbox" class="ace" />
-                                                    <span class="lbl"></span>
-                                                </label>
-                                            </th>
-                                            <th>Id</th>
-                                            <th>Logo</th>
-                                            <th>Tên nhà sản xuất</th>
+                            <div class="col-sm-9">
+                               @* @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "col-xs-10" } })*@
+                                  <input type="text" value="@Model.name" id="editname" name="editname" placeholder="Vui lòng nhập tên nhà sản xuất" class="col-xs-10" />
+                                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="space-4"></div>
+                        </div>
+                        <div class="hr hr-24"></div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="logo">Logo: </label>
 
-                                            <th>
-                                                <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-                                                Hiện thị
-                                            </th>
-
-
-                                            <th>Tác vụ</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            @Html.AntiForgeryToken()
-                                            if (item.activeFlag == 1)
-                                            {
-
-
-
-
-                                                <!--                                        Dòng thứ nhất-->
-                                                <tr>
-                                                    <td class="center">
-                                                        <label class="pos-rel">
-                                                            <input type="checkbox" class="ace" />
-                                                            <span class="lbl"></span>
-                                                        </label>
-                                                    </td>
-
-
-                                                    <td>@item.id</td>
-                                                    <td><img style="max-height:60px" src="~/@item.logo" alt="@item.name" /></td>
-                                                    <td class="hidden-480">@item.name</td>
-                                                    <!--                                            <td>Thành viên</td>-->
-
-                                                    <td class="hidden-480">
-                                                        <div class="col-xs-3">
-                                                            <label>
-                                                                <input name="switch-field-1" class="ace ace-switch" type="checkbox" />
-                                                                <span class="lbl"></span>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-
-                                                    <td>
-                                                        <div class="hidden-sm hidden-xs action-buttons">
-
-                                                            <a class="green" href="@Url.Action("Edit/"+item.id)">
-                                                           <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                                          </a>
-                                                          @*  @Html.ActionLink("Edit", "Edit", new { id = item.id })*@
-
-                                                            <a class="red" href="@Url.Action("Delete/"+item.id)" onclick="return confirm('Bạn chắc chắn xóa? '+'@item.name');">
-                                                                <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                                                              
-                                                            </a>
-                                                            @*@Html.ActionLink("Delete", "Delete", new { id = item.id})*@
-                                                           
-                                                        </div>
-
-
-                                                    </td>
-                                                </tr>
-
-
-                                            }
-                                        }
-
-                                    </tbody>
-                                </table>
+                            <div class="col-sm-9">
+                                <input type="file" name="editlogo" id="editlogo" class="col-xs-10" />
                             </div>
                         </div>
-                    </div>
+                        <div class="space-4"></div>
 
-                    <!-- PAGE CONTENT ENDS -->
-                </div><!-- /.col -->
+
+                        <div class="clearfix form-actions">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-info" type="submit">
+                                    <i class="ace-icon fa fa-check bigger-110"></i>
+                                    Submit
+                                </button>
+
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn" type="reset">
+                                    <i class="ace-icon fa fa-undo bigger-110"></i>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="hr hr-24"></div>
+
+                        <div class="space-24"></div>
+
+
+                    </form>
+                        }}
+                    </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.page-content -->
     </div>
 </div><!-- /.main-content -->
-<!-- inline scripts related to this page -->
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#dynamic-table').DataTable();
-    });
-
-</script>
-

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Website_StorePhone3.Models.db
+namespace Website_StorePhone3.Models.DB
 {
     using System;
     using System.Collections.Generic;
@@ -16,7 +16,8 @@ namespace Website_StorePhone3.Models.db
     {
         public category()
         {
-            this.items = new HashSet<item>();
+            this.category1 = new HashSet<category>();
+            this.products = new HashSet<product>();
         }
     
         public int id { get; set; }
@@ -26,7 +27,10 @@ namespace Website_StorePhone3.Models.db
         public int activeFlag { get; set; }
         public System.DateTime createDate { get; set; }
         public System.DateTime updateDate { get; set; }
+        public Nullable<int> parentId { get; set; }
     
-        public virtual ICollection<item> items { get; set; }
+        public virtual ICollection<category> category1 { get; set; }
+        public virtual category category2 { get; set; }
+        public virtual ICollection<product> products { get; set; }
     }
 }

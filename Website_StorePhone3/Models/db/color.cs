@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Website_StorePhone3.Models.db
+namespace Website_StorePhone3.Models.DB
 {
     using System;
     using System.Collections.Generic;

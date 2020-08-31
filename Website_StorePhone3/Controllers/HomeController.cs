@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Website_StorePhone3.Models.db;
+using Website_StorePhone3.Models.DB;
 
 namespace Website_StorePhone3.Controllers
 {
@@ -22,6 +22,15 @@ namespace Website_StorePhone3.Controllers
         {
             return View();
         }
+        public ActionResult ListPhone()
+        {
+            return View();
+        }
+        public ActionResult ListLapTop()
+        {
+            return View();
+        }
+      
         public ActionResult ListProduct()
         {
             return View();

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Website_StorePhone3.Models.db
+namespace Website_StorePhone3.Models.DB
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,6 @@ namespace Website_StorePhone3.Models.db
         public brand()
         {
             this.products = new HashSet<product>();
-            this.productlines = new HashSet<productline>();
         }
     
         public int id { get; set; }
@@ -26,9 +25,7 @@ namespace Website_StorePhone3.Models.db
         public int activeFlag { get; set; }
         public System.DateTime createDate { get; set; }
         public System.DateTime updateDate { get; set; }
-        public int status { get; set; }
     
         public virtual ICollection<product> products { get; set; }
-        public virtual ICollection<productline> productlines { get; set; }
     }
 }

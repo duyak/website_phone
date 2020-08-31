@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Website_StorePhone3.Models.db
+namespace Website_StorePhone3.Models.DB
 {
     using System;
     using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace Website_StorePhone3.Models.db
         public virtual color color { get; set; }
         public virtual ICollection<orderdetail> orderdetails { get; set; }
         public virtual product product { get; set; }
-        public virtual spec spec { get; set; }
         public virtual ICollection<storage> storages { get; set; }
+        public virtual spec spec { get; set; }
     }
 }

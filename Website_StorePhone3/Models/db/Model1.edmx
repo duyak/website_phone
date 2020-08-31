@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="phone_storeModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="dotnetstorephone.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="auth">
           <Key>
             <PropertyRef Name="id" />
@@ -27,7 +27,6 @@
           <Property Name="activeFlag" Type="int" Nullable="false" />
           <Property Name="createDate" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="updateDate" Type="timestamp" Precision="0" Nullable="false" />
-          <Property Name="status" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="category">
           <Key>
@@ -40,6 +39,7 @@
           <Property Name="activeFlag" Type="int" Nullable="false" />
           <Property Name="createDate" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="updateDate" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="parentId" Type="int" />
         </EntityType>
         <EntityType Name="color">
           <Key>
@@ -58,10 +58,14 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userId" Type="int" Nullable="false" />
           <Property Name="productId" Type="int" Nullable="false" />
+          <Property Name="fullname" Type="varchar" MaxLength="255" />
+          <Property Name="email" Type="varchar" MaxLength="255" />
           <Property Name="content" Type="text" />
           <Property Name="activeFlag" Type="int" Nullable="false" />
           <Property Name="createDate" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="updateDate" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="reply" Type="int" />
+          <Property Name="parent" Type="int" />
         </EntityType>
         <EntityType Name="discount">
           <Key>
@@ -73,17 +77,6 @@
           <Property Name="startDate" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="endDate" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="percentage" Type="int" Nullable="false" />
-          <Property Name="activeFlag" Type="int" Nullable="false" />
-          <Property Name="createDate" Type="timestamp" Precision="0" Nullable="false" />
-          <Property Name="updateDate" Type="timestamp" Precision="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="item">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="cateId" Type="int" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="activeFlag" Type="int" Nullable="false" />
           <Property Name="createDate" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="updateDate" Type="timestamp" Precision="0" Nullable="false" />
@@ -138,6 +131,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="itemId" Type="int" Nullable="false" />
           <Property Name="brandId" Type="int" Nullable="false" />
+          <Property Name="catagoryId" Type="int" />
           <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="code" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="description" Type="text" />
@@ -159,16 +153,6 @@
           <Property Name="activeFlag" Type="int" Nullable="false" />
           <Property Name="createDate" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="updateDate" Type="timestamp" Precision="0" Nullable="false" />
-        </EntityType>
-        <EntityType Name="productline">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="255" />
-          <Property Name="brandId" Type="int" />
-          <Property Name="createDate" Type="timestamp" Precision="0" />
-          <Property Name="createUpdate" Type="timestamp" Precision="0" />
         </EntityType>
         <EntityType Name="role">
           <Key>
@@ -213,18 +197,11 @@
           <Property Name="createDate" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="updateDate" Type="timestamp" Precision="0" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'def.phone_store.storage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="storage">
           <Key>
             <PropertyRef Name="id" />
-            <PropertyRef Name="productDetailId" />
-            <PropertyRef Name="quantity" />
-            <PropertyRef Name="activeFlag" />
-            <PropertyRef Name="createDate" />
-            <PropertyRef Name="updateDate" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="productDetailId" Type="int" Nullable="false" />
           <Property Name="quantity" Type="int" Nullable="false" />
           <Property Name="activeFlag" Type="int" Nullable="false" />
@@ -287,6 +264,32 @@ warning 6002: The table/view 'def.phone_store.storage' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="category_ibfk_1">
+          <End Role="category" Type="Self.category" Multiplicity="0..1" />
+          <End Role="category1" Type="Self.category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="category1">
+              <PropertyRef Name="parentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="comment_ibfk_1">
+          <End Role="comment" Type="Self.comment" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="comment1" Type="Self.comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="comment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="comment1">
+              <PropertyRef Name="parent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="comment_product_fk">
           <End Role="product" Type="Self.product" Multiplicity="1" />
           <End Role="comment" Type="Self.comment" Multiplicity="*" />
@@ -322,20 +325,6 @@ warning 6002: The table/view 'def.phone_store.storage' does not have a primary k
             </Principal>
             <Dependent Role="discount">
               <PropertyRef Name="productId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="item_cate_fk">
-          <End Role="category" Type="Self.category" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="item" Type="Self.item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="category">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="item">
-              <PropertyRef Name="cateId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -382,16 +371,28 @@ warning 6002: The table/view 'def.phone_store.storage' does not have a primary k
           </ReferentialConstraint>
         </Association>
         <Association Name="product_ibfk_1">
-          <End Role="brand" Type="Self.brand" Multiplicity="1">
+          <End Role="category" Type="Self.category" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="product" Type="Self.product" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="brand">
+            <Principal Role="category">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="product">
-              <PropertyRef Name="brandId" />
+              <PropertyRef Name="catagoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="productDetail_storage_fk">
+          <End Role="productdetail" Type="Self.productdetail" Multiplicity="1" />
+          <End Role="storage" Type="Self.storage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productdetail">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="storage">
+              <PropertyRef Name="productDetailId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -410,9 +411,7 @@ warning 6002: The table/view 'def.phone_store.storage' does not have a primary k
           </ReferentialConstraint>
         </Association>
         <Association Name="productDetailId_productId_fk">
-          <End Role="product" Type="Self.product" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="product" Type="Self.product" Multiplicity="1" />
           <End Role="productdetail" Type="Self.productdetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="product">
@@ -437,28 +436,16 @@ warning 6002: The table/view 'def.phone_store.storage' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="productId_ItemId_fk">
-          <End Role="item" Type="Self.item" Multiplicity="1">
+        <Association Name="productId_BrandId_fk">
+          <End Role="brand" Type="Self.brand" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="product" Type="Self.product" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="item">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="product">
-              <PropertyRef Name="itemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="productline_ibfk_1">
-          <End Role="brand" Type="Self.brand" Multiplicity="0..1" />
-          <End Role="productline" Type="Self.productline" Multiplicity="*" />
-          <ReferentialConstraint>
             <Principal Role="brand">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="productline">
+            <Dependent Role="product">
               <PropertyRef Name="brandId" />
             </Dependent>
           </ReferentialConstraint>
@@ -503,20 +490,6 @@ warning 6002: The table/view 'def.phone_store.storage' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="storageId_ProductDetailId_fk">
-          <End Role="productdetail" Type="Self.productdetail" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="storage" Type="Self.storage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="productdetail">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="storage">
-              <PropertyRef Name="productDetailId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="voucherId_ProductId_fk">
           <End Role="product" Type="Self.product" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -545,36 +518,25 @@ warning 6002: The table/view 'def.phone_store.storage' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="phone_storeModelStoreContainer">
-          <EntitySet Name="auth" EntityType="Self.auth" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="brand" EntityType="Self.brand" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="category" EntityType="Self.category" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="color" EntityType="Self.color" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="comment" EntityType="Self.comment" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="discount" EntityType="Self.discount" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="item" EntityType="Self.item" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="menu" EntityType="Self.menu" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="order" EntityType="Self.order" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="orderdetail" EntityType="Self.orderdetail" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="product" EntityType="Self.product" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="productdetail" EntityType="Self.productdetail" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="productline" EntityType="Self.productline" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="role" EntityType="Self.role" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="roleuser" EntityType="Self.roleuser" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="spec" EntityType="Self.spec" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="specdetail" EntityType="Self.specdetail" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="users" EntityType="Self.users" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="voucher" EntityType="Self.voucher" Schema="phone_store" store:Type="Tables" />
-          <EntitySet Name="storage" EntityType="Self.storage" store:Type="Tables" store:Schema="phone_store">
-            <DefiningQuery>SELECT
-`storage`.`id`, 
-`storage`.`productDetailId`, 
-`storage`.`quantity`, 
-`storage`.`activeFlag`, 
-`storage`.`createDate`, 
-`storage`.`updateDate`
-FROM `storage` AS `storage`</DefiningQuery>
-          </EntitySet>
+        <EntityContainer Name="dotnetstorephoneStoreContainer">
+          <EntitySet Name="auth" EntityType="Self.auth" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="brand" EntityType="Self.brand" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="category" EntityType="Self.category" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="color" EntityType="Self.color" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="comment" EntityType="Self.comment" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="discount" EntityType="Self.discount" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="menu" EntityType="Self.menu" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="order" EntityType="Self.order" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="orderdetail" EntityType="Self.orderdetail" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="product" EntityType="Self.product" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="productdetail" EntityType="Self.productdetail" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="role" EntityType="Self.role" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="roleuser" EntityType="Self.roleuser" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="spec" EntityType="Self.spec" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="specdetail" EntityType="Self.specdetail" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="storage" EntityType="Self.storage" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dotnetstorephone" store:Type="Tables" />
+          <EntitySet Name="voucher" EntityType="Self.voucher" Schema="dotnetstorephone" store:Type="Tables" />
           <AssociationSet Name="authId_MenuId_fk" Association="Self.authId_MenuId_fk">
             <End Role="menu" EntitySet="menu" />
             <End Role="auth" EntitySet="auth" />
@@ -582,6 +544,14 @@ FROM `storage` AS `storage`</DefiningQuery>
           <AssociationSet Name="authId_RoleId_fk" Association="Self.authId_RoleId_fk">
             <End Role="role" EntitySet="role" />
             <End Role="auth" EntitySet="auth" />
+          </AssociationSet>
+          <AssociationSet Name="category_ibfk_1" Association="Self.category_ibfk_1">
+            <End Role="category" EntitySet="category" />
+            <End Role="category1" EntitySet="category" />
+          </AssociationSet>
+          <AssociationSet Name="comment_ibfk_1" Association="Self.comment_ibfk_1">
+            <End Role="comment" EntitySet="comment" />
+            <End Role="comment1" EntitySet="comment" />
           </AssociationSet>
           <AssociationSet Name="comment_product_fk" Association="Self.comment_product_fk">
             <End Role="product" EntitySet="product" />
@@ -594,10 +564,6 @@ FROM `storage` AS `storage`</DefiningQuery>
           <AssociationSet Name="discountId_productId_fk" Association="Self.discountId_productId_fk">
             <End Role="product" EntitySet="product" />
             <End Role="discount" EntitySet="discount" />
-          </AssociationSet>
-          <AssociationSet Name="item_cate_fk" Association="Self.item_cate_fk">
-            <End Role="category" EntitySet="category" />
-            <End Role="item" EntitySet="item" />
           </AssociationSet>
           <AssociationSet Name="oderId_UsersId_fk" Association="Self.oderId_UsersId_fk">
             <End Role="users" EntitySet="users" />
@@ -612,8 +578,12 @@ FROM `storage` AS `storage`</DefiningQuery>
             <End Role="orderdetail" EntitySet="orderdetail" />
           </AssociationSet>
           <AssociationSet Name="product_ibfk_1" Association="Self.product_ibfk_1">
-            <End Role="brand" EntitySet="brand" />
+            <End Role="category" EntitySet="category" />
             <End Role="product" EntitySet="product" />
+          </AssociationSet>
+          <AssociationSet Name="productDetail_storage_fk" Association="Self.productDetail_storage_fk">
+            <End Role="productdetail" EntitySet="productdetail" />
+            <End Role="storage" EntitySet="storage" />
           </AssociationSet>
           <AssociationSet Name="productDetailId_colorId_fk" Association="Self.productDetailId_colorId_fk">
             <End Role="color" EntitySet="color" />
@@ -627,13 +597,9 @@ FROM `storage` AS `storage`</DefiningQuery>
             <End Role="spec" EntitySet="spec" />
             <End Role="productdetail" EntitySet="productdetail" />
           </AssociationSet>
-          <AssociationSet Name="productId_ItemId_fk" Association="Self.productId_ItemId_fk">
-            <End Role="item" EntitySet="item" />
-            <End Role="product" EntitySet="product" />
-          </AssociationSet>
-          <AssociationSet Name="productline_ibfk_1" Association="Self.productline_ibfk_1">
+          <AssociationSet Name="productId_BrandId_fk" Association="Self.productId_BrandId_fk">
             <End Role="brand" EntitySet="brand" />
-            <End Role="productline" EntitySet="productline" />
+            <End Role="product" EntitySet="product" />
           </AssociationSet>
           <AssociationSet Name="roleUserId_RoleId_fk" Association="Self.roleUserId_RoleId_fk">
             <End Role="role" EntitySet="role" />
@@ -646,10 +612,6 @@ FROM `storage` AS `storage`</DefiningQuery>
           <AssociationSet Name="specId_specDetailId_fk" Association="Self.specId_specDetailId_fk">
             <End Role="spec" EntitySet="spec" />
             <End Role="specdetail" EntitySet="specdetail" />
-          </AssociationSet>
-          <AssociationSet Name="storageId_ProductDetailId_fk" Association="Self.storageId_ProductDetailId_fk">
-            <End Role="productdetail" EntitySet="productdetail" />
-            <End Role="storage" EntitySet="storage" />
           </AssociationSet>
           <AssociationSet Name="voucherId_ProductId_fk" Association="Self.voucherId_ProductId_fk">
             <End Role="product" EntitySet="product" />
@@ -664,7 +626,7 @@ FROM `storage` AS `storage`</DefiningQuery>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="phone_storeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="dotnetstorephone" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="auth">
           <Key>
             <PropertyRef Name="id" />
@@ -689,9 +651,7 @@ FROM `storage` AS `storage`</DefiningQuery>
           <Property Name="activeFlag" Type="Int32" Nullable="false" />
           <Property Name="createDate" Type="DateTime" Nullable="false" />
           <Property Name="updateDate" Type="DateTime" Nullable="false" />
-          <Property Name="status" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="products" Relationship="Self.product_ibfk_1" FromRole="brand" ToRole="product" />
-          <NavigationProperty Name="productlines" Relationship="Self.productline_ibfk_1" FromRole="brand" ToRole="productline" />
+          <NavigationProperty Name="products" Relationship="Self.productId_BrandId_fk" FromRole="brand" ToRole="product" />
         </EntityType>
         <EntityType Name="category">
           <Key>
@@ -704,7 +664,10 @@ FROM `storage` AS `storage`</DefiningQuery>
           <Property Name="activeFlag" Type="Int32" Nullable="false" />
           <Property Name="createDate" Type="DateTime" Nullable="false" />
           <Property Name="updateDate" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="items" Relationship="Self.item_cate_fk" FromRole="category" ToRole="item" />
+          <Property Name="parentId" Type="Int32" />
+          <NavigationProperty Name="category1" Relationship="Self.category_ibfk_1" FromRole="category" ToRole="category1" />
+          <NavigationProperty Name="category2" Relationship="Self.category_ibfk_1" FromRole="category1" ToRole="category" />
+          <NavigationProperty Name="products" Relationship="Self.product_ibfk_1" FromRole="category" ToRole="product" />
         </EntityType>
         <EntityType Name="color">
           <Key>
@@ -724,10 +687,16 @@ FROM `storage` AS `storage`</DefiningQuery>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="userId" Type="Int32" Nullable="false" />
           <Property Name="productId" Type="Int32" Nullable="false" />
+          <Property Name="fullname" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="content" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="activeFlag" Type="Int32" Nullable="false" />
           <Property Name="createDate" Type="DateTime" Nullable="false" />
           <Property Name="updateDate" Type="DateTime" Nullable="false" />
+          <Property Name="reply" Type="Int32" />
+          <Property Name="parent" Type="Int32" />
+          <NavigationProperty Name="comment1" Relationship="Self.comment_ibfk_1" FromRole="comment" ToRole="comment1" />
+          <NavigationProperty Name="comment2" Relationship="Self.comment_ibfk_1" FromRole="comment1" ToRole="comment" />
           <NavigationProperty Name="product" Relationship="Self.comment_product_fk" FromRole="comment" ToRole="product" />
           <NavigationProperty Name="user" Relationship="Self.comment_user_fk" FromRole="comment" ToRole="users" />
         </EntityType>
@@ -745,19 +714,6 @@ FROM `storage` AS `storage`</DefiningQuery>
           <Property Name="createDate" Type="DateTime" Nullable="false" />
           <Property Name="updateDate" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="product" Relationship="Self.discountId_productId_fk" FromRole="discount" ToRole="product" />
-        </EntityType>
-        <EntityType Name="item">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="cateId" Type="Int32" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="activeFlag" Type="Int32" Nullable="false" />
-          <Property Name="createDate" Type="DateTime" Nullable="false" />
-          <Property Name="updateDate" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="category" Relationship="Self.item_cate_fk" FromRole="item" ToRole="category" />
-          <NavigationProperty Name="products" Relationship="Self.productId_ItemId_fk" FromRole="item" ToRole="product" />
         </EntityType>
         <EntityType Name="menu">
           <Key>
@@ -814,6 +770,7 @@ FROM `storage` AS `storage`</DefiningQuery>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="itemId" Type="Int32" Nullable="false" />
           <Property Name="brandId" Type="Int32" Nullable="false" />
+          <Property Name="catagoryId" Type="Int32" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
@@ -821,10 +778,10 @@ FROM `storage` AS `storage`</DefiningQuery>
           <Property Name="activeFlag" Type="Int32" Nullable="false" />
           <Property Name="createDate" Type="DateTime" Nullable="false" />
           <Property Name="updateDate" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="brand" Relationship="Self.product_ibfk_1" FromRole="product" ToRole="brand" />
+          <NavigationProperty Name="brand" Relationship="Self.productId_BrandId_fk" FromRole="product" ToRole="brand" />
+          <NavigationProperty Name="category" Relationship="Self.product_ibfk_1" FromRole="product" ToRole="category" />
           <NavigationProperty Name="comments" Relationship="Self.comment_product_fk" FromRole="product" ToRole="comment" />
           <NavigationProperty Name="discounts" Relationship="Self.discountId_productId_fk" FromRole="product" ToRole="discount" />
-          <NavigationProperty Name="item" Relationship="Self.productId_ItemId_fk" FromRole="product" ToRole="item" />
           <NavigationProperty Name="productdetails" Relationship="Self.productDetailId_productId_fk" FromRole="product" ToRole="productdetail" />
           <NavigationProperty Name="vouchers" Relationship="Self.voucherId_ProductId_fk" FromRole="product" ToRole="voucher" />
           <NavigationProperty Name="vouchers1" Relationship="Self.voucherId_ProductVoucherId_fk" FromRole="product" ToRole="voucher" />
@@ -845,19 +802,8 @@ FROM `storage` AS `storage`</DefiningQuery>
           <NavigationProperty Name="color" Relationship="Self.productDetailId_colorId_fk" FromRole="productdetail" ToRole="color" />
           <NavigationProperty Name="orderdetails" Relationship="Self.orderDetail_ProductDetailId_fk" FromRole="productdetail" ToRole="orderdetail" />
           <NavigationProperty Name="product" Relationship="Self.productDetailId_productId_fk" FromRole="productdetail" ToRole="product" />
+          <NavigationProperty Name="storages" Relationship="Self.productDetail_storage_fk" FromRole="productdetail" ToRole="storage" />
           <NavigationProperty Name="spec" Relationship="Self.productDetailId_specId_fk" FromRole="productdetail" ToRole="spec" />
-          <NavigationProperty Name="storages" Relationship="Self.storageId_ProductDetailId_fk" FromRole="productdetail" ToRole="storage" />
-        </EntityType>
-        <EntityType Name="productline">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="brandId" Type="Int32" />
-          <Property Name="createDate" Type="DateTime" />
-          <Property Name="createUpdate" Type="DateTime" />
-          <NavigationProperty Name="brand" Relationship="Self.productline_ibfk_1" FromRole="productline" ToRole="brand" />
         </EntityType>
         <EntityType Name="role">
           <Key>
@@ -909,6 +855,18 @@ FROM `storage` AS `storage`</DefiningQuery>
           <Property Name="updateDate" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="spec" Relationship="Self.specId_specDetailId_fk" FromRole="specdetail" ToRole="spec" />
         </EntityType>
+        <EntityType Name="storage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="productDetailId" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="activeFlag" Type="Int32" Nullable="false" />
+          <Property Name="createDate" Type="DateTime" Nullable="false" />
+          <Property Name="updateDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="productdetail" Relationship="Self.productDetail_storage_fk" FromRole="storage" ToRole="productdetail" />
+        </EntityType>
         <EntityType Name="user">
           <Key>
             <PropertyRef Name="id" />
@@ -942,23 +900,6 @@ FROM `storage` AS `storage`</DefiningQuery>
           <NavigationProperty Name="product" Relationship="Self.voucherId_ProductId_fk" FromRole="voucher" ToRole="product" />
           <NavigationProperty Name="product1" Relationship="Self.voucherId_ProductVoucherId_fk" FromRole="voucher" ToRole="product" />
         </EntityType>
-        <EntityType Name="storage">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="productDetailId" />
-            <PropertyRef Name="quantity" />
-            <PropertyRef Name="activeFlag" />
-            <PropertyRef Name="createDate" />
-            <PropertyRef Name="updateDate" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="productDetailId" Type="Int32" Nullable="false" />
-          <Property Name="quantity" Type="Int32" Nullable="false" />
-          <Property Name="activeFlag" Type="Int32" Nullable="false" />
-          <Property Name="createDate" Type="DateTime" Nullable="false" />
-          <Property Name="updateDate" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="productdetail" Relationship="Self.storageId_ProductDetailId_fk" FromRole="storage" ToRole="productdetail" />
-        </EntityType>
         <Association Name="authId_MenuId_fk">
           <End Role="menu" Type="Self.menu" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -987,7 +928,7 @@ FROM `storage` AS `storage`</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="product_ibfk_1">
+        <Association Name="productId_BrandId_fk">
           <End Role="brand" Type="Self.brand" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -1001,29 +942,29 @@ FROM `storage` AS `storage`</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="productline_ibfk_1">
-          <End Role="brand" Type="Self.brand" Multiplicity="0..1" />
-          <End Role="productline" Type="Self.productline" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="brand">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="productline">
-              <PropertyRef Name="brandId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="item_cate_fk">
-          <End Role="category" Type="Self.category" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="item" Type="Self.item" Multiplicity="*" />
+        <Association Name="category_ibfk_1">
+          <End Role="category" Type="Self.category" Multiplicity="0..1" />
+          <End Role="category1" Type="Self.category" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="category">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="item">
-              <PropertyRef Name="cateId" />
+            <Dependent Role="category1">
+              <PropertyRef Name="parentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="product_ibfk_1">
+          <End Role="category" Type="Self.category" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="product" Type="Self.product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="catagoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1038,6 +979,20 @@ FROM `storage` AS `storage`</DefiningQuery>
             </Principal>
             <Dependent Role="productdetail">
               <PropertyRef Name="colorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="comment_ibfk_1">
+          <End Role="comment" Type="Self.comment" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="comment1" Type="Self.comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="comment">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="comment1">
+              <PropertyRef Name="parent" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1076,20 +1031,6 @@ FROM `storage` AS `storage`</DefiningQuery>
             </Principal>
             <Dependent Role="discount">
               <PropertyRef Name="productId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="productId_ItemId_fk">
-          <End Role="item" Type="Self.item" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="product" Type="Self.product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="item">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="product">
-              <PropertyRef Name="itemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1136,9 +1077,7 @@ FROM `storage` AS `storage`</DefiningQuery>
           </ReferentialConstraint>
         </Association>
         <Association Name="productDetailId_productId_fk">
-          <End Role="product" Type="Self.product" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="product" Type="Self.product" Multiplicity="1" />
           <End Role="productdetail" Type="Self.productdetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="product">
@@ -1177,6 +1116,18 @@ FROM `storage` AS `storage`</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="productDetail_storage_fk">
+          <End Role="productdetail" Type="Self.productdetail" Multiplicity="1" />
+          <End Role="storage" Type="Self.storage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productdetail">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="storage">
+              <PropertyRef Name="productDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="productDetailId_specId_fk">
           <End Role="spec" Type="Self.spec" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1188,20 +1139,6 @@ FROM `storage` AS `storage`</DefiningQuery>
             </Principal>
             <Dependent Role="productdetail">
               <PropertyRef Name="specId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="storageId_ProductDetailId_fk">
-          <End Role="productdetail" Type="Self.productdetail" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="storage" Type="Self.storage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="productdetail">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="storage">
-              <PropertyRef Name="productDetailId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1245,27 +1182,25 @@ FROM `storage` AS `storage`</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="phone_storeEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="dotnetstorephoneEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="auths" EntityType="Self.auth" />
           <EntitySet Name="brands" EntityType="Self.brand" />
           <EntitySet Name="categories" EntityType="Self.category" />
           <EntitySet Name="colors" EntityType="Self.color" />
           <EntitySet Name="comments" EntityType="Self.comment" />
           <EntitySet Name="discounts" EntityType="Self.discount" />
-          <EntitySet Name="items" EntityType="Self.item" />
           <EntitySet Name="menus" EntityType="Self.menu" />
           <EntitySet Name="orders" EntityType="Self.order" />
           <EntitySet Name="orderdetails" EntityType="Self.orderdetail" />
           <EntitySet Name="products" EntityType="Self.product" />
           <EntitySet Name="productdetails" EntityType="Self.productdetail" />
-          <EntitySet Name="productlines" EntityType="Self.productline" />
           <EntitySet Name="roles" EntityType="Self.role" />
           <EntitySet Name="roleusers" EntityType="Self.roleuser" />
           <EntitySet Name="specs" EntityType="Self.spec" />
           <EntitySet Name="specdetails" EntityType="Self.specdetail" />
+          <EntitySet Name="storages" EntityType="Self.storage" />
           <EntitySet Name="users" EntityType="Self.user" />
           <EntitySet Name="vouchers" EntityType="Self.voucher" />
-          <EntitySet Name="storages" EntityType="Self.storage" />
           <AssociationSet Name="authId_MenuId_fk" Association="Self.authId_MenuId_fk">
             <End Role="menu" EntitySet="menus" />
             <End Role="auth" EntitySet="auths" />
@@ -1274,21 +1209,25 @@ FROM `storage` AS `storage`</DefiningQuery>
             <End Role="role" EntitySet="roles" />
             <End Role="auth" EntitySet="auths" />
           </AssociationSet>
-          <AssociationSet Name="product_ibfk_1" Association="Self.product_ibfk_1">
+          <AssociationSet Name="productId_BrandId_fk" Association="Self.productId_BrandId_fk">
             <End Role="brand" EntitySet="brands" />
             <End Role="product" EntitySet="products" />
           </AssociationSet>
-          <AssociationSet Name="productline_ibfk_1" Association="Self.productline_ibfk_1">
-            <End Role="brand" EntitySet="brands" />
-            <End Role="productline" EntitySet="productlines" />
-          </AssociationSet>
-          <AssociationSet Name="item_cate_fk" Association="Self.item_cate_fk">
+          <AssociationSet Name="category_ibfk_1" Association="Self.category_ibfk_1">
             <End Role="category" EntitySet="categories" />
-            <End Role="item" EntitySet="items" />
+            <End Role="category1" EntitySet="categories" />
+          </AssociationSet>
+          <AssociationSet Name="product_ibfk_1" Association="Self.product_ibfk_1">
+            <End Role="category" EntitySet="categories" />
+            <End Role="product" EntitySet="products" />
           </AssociationSet>
           <AssociationSet Name="productDetailId_colorId_fk" Association="Self.productDetailId_colorId_fk">
             <End Role="color" EntitySet="colors" />
             <End Role="productdetail" EntitySet="productdetails" />
+          </AssociationSet>
+          <AssociationSet Name="comment_ibfk_1" Association="Self.comment_ibfk_1">
+            <End Role="comment" EntitySet="comments" />
+            <End Role="comment1" EntitySet="comments" />
           </AssociationSet>
           <AssociationSet Name="comment_product_fk" Association="Self.comment_product_fk">
             <End Role="product" EntitySet="products" />
@@ -1301,10 +1240,6 @@ FROM `storage` AS `storage`</DefiningQuery>
           <AssociationSet Name="discountId_productId_fk" Association="Self.discountId_productId_fk">
             <End Role="product" EntitySet="products" />
             <End Role="discount" EntitySet="discounts" />
-          </AssociationSet>
-          <AssociationSet Name="productId_ItemId_fk" Association="Self.productId_ItemId_fk">
-            <End Role="item" EntitySet="items" />
-            <End Role="product" EntitySet="products" />
           </AssociationSet>
           <AssociationSet Name="oderId_UsersId_fk" Association="Self.oderId_UsersId_fk">
             <End Role="users" EntitySet="users" />
@@ -1330,13 +1265,13 @@ FROM `storage` AS `storage`</DefiningQuery>
             <End Role="product" EntitySet="products" />
             <End Role="voucher" EntitySet="vouchers" />
           </AssociationSet>
+          <AssociationSet Name="productDetail_storage_fk" Association="Self.productDetail_storage_fk">
+            <End Role="productdetail" EntitySet="productdetails" />
+            <End Role="storage" EntitySet="storages" />
+          </AssociationSet>
           <AssociationSet Name="productDetailId_specId_fk" Association="Self.productDetailId_specId_fk">
             <End Role="spec" EntitySet="specs" />
             <End Role="productdetail" EntitySet="productdetails" />
-          </AssociationSet>
-          <AssociationSet Name="storageId_ProductDetailId_fk" Association="Self.storageId_ProductDetailId_fk">
-            <End Role="productdetail" EntitySet="productdetails" />
-            <End Role="storage" EntitySet="storages" />
           </AssociationSet>
           <AssociationSet Name="roleUserId_RoleId_fk" Association="Self.roleUserId_RoleId_fk">
             <End Role="role" EntitySet="roles" />
@@ -1356,9 +1291,9 @@ FROM `storage` AS `storage`</DefiningQuery>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="phone_storeModelStoreContainer" CdmEntityContainer="phone_storeEntities1">
+        <EntityContainerMapping StorageEntityContainer="dotnetstorephoneStoreContainer" CdmEntityContainer="dotnetstorephoneEntities">
           <EntitySetMapping Name="auths">
-            <EntityTypeMapping TypeName="phone_storeModel.auth">
+            <EntityTypeMapping TypeName="dotnetstorephone.auth">
               <MappingFragment StoreEntitySet="auth">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="roleId" ColumnName="roleId" />
@@ -1371,7 +1306,7 @@ FROM `storage` AS `storage`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="brands">
-            <EntityTypeMapping TypeName="phone_storeModel.brand">
+            <EntityTypeMapping TypeName="dotnetstorephone.brand">
               <MappingFragment StoreEntitySet="brand">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -1379,12 +1314,11 @@ FROM `storage` AS `storage`</DefiningQuery>
                 <ScalarProperty Name="activeFlag" ColumnName="activeFlag" />
                 <ScalarProperty Name="createDate" ColumnName="createDate" />
                 <ScalarProperty Name="updateDate" ColumnName="updateDate" />
-                <ScalarProperty Name="status" ColumnName="status" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="categories">
-            <EntityTypeMapping TypeName="phone_storeModel.category">
+            <EntityTypeMapping TypeName="dotnetstorephone.category">
               <MappingFragment StoreEntitySet="category">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -1393,11 +1327,12 @@ FROM `storage` AS `storage`</DefiningQuery>
                 <ScalarProperty Name="activeFlag" ColumnName="activeFlag" />
                 <ScalarProperty Name="createDate" ColumnName="createDate" />
                 <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="parentId" ColumnName="parentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="colors">
-            <EntityTypeMapping TypeName="phone_storeModel.color">
+            <EntityTypeMapping TypeName="dotnetstorephone.color">
               <MappingFragment StoreEntitySet="color">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -1408,20 +1343,24 @@ FROM `storage` AS `storage`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="comments">
-            <EntityTypeMapping TypeName="phone_storeModel.comment">
+            <EntityTypeMapping TypeName="dotnetstorephone.comment">
               <MappingFragment StoreEntitySet="comment">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="productId" ColumnName="productId" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="content" ColumnName="content" />
                 <ScalarProperty Name="activeFlag" ColumnName="activeFlag" />
                 <ScalarProperty Name="createDate" ColumnName="createDate" />
                 <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="reply" ColumnName="reply" />
+                <ScalarProperty Name="parent" ColumnName="parent" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="discounts">
-            <EntityTypeMapping TypeName="phone_storeModel.discount">
+            <EntityTypeMapping TypeName="dotnetstorephone.discount">
               <MappingFragment StoreEntitySet="discount">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -1435,20 +1374,8 @@ FROM `storage` AS `storage`</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="items">
-            <EntityTypeMapping TypeName="phone_storeModel.item">
-              <MappingFragment StoreEntitySet="item">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="cateId" ColumnName="cateId" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="activeFlag" ColumnName="activeFlag" />
-                <ScalarProperty Name="createDate" ColumnName="createDate" />
-                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="menus">
-            <EntityTypeMapping TypeName="phone_storeModel.menu">
+            <EntityTypeMapping TypeName="dotnetstorephone.menu">
               <MappingFragment StoreEntitySet="menu">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="parentId" ColumnName="parentId" />
@@ -1462,7 +1389,7 @@ FROM `storage` AS `storage`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="orders">
-            <EntityTypeMapping TypeName="phone_storeModel.order">
+            <EntityTypeMapping TypeName="dotnetstorephone.order">
               <MappingFragment StoreEntitySet="order">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
@@ -1480,7 +1407,7 @@ FROM `storage` AS `storage`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="orderdetails">
-            <EntityTypeMapping TypeName="phone_storeModel.orderdetail">
+            <EntityTypeMapping TypeName="dotnetstorephone.orderdetail">
               <MappingFragment StoreEntitySet="orderdetail">
                 <ScalarProperty Name="orderId" ColumnName="orderId" />
                 <ScalarProperty Name="productDetailId" ColumnName="productDetailId" />
@@ -1493,11 +1420,12 @@ FROM `storage` AS `storage`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="products">
-            <EntityTypeMapping TypeName="phone_storeModel.product">
+            <EntityTypeMapping TypeName="dotnetstorephone.product">
               <MappingFragment StoreEntitySet="product">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="itemId" ColumnName="itemId" />
                 <ScalarProperty Name="brandId" ColumnName="brandId" />
+                <ScalarProperty Name="catagoryId" ColumnName="catagoryId" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="description" ColumnName="description" />
@@ -1509,7 +1437,7 @@ FROM `storage` AS `storage`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="productdetails">
-            <EntityTypeMapping TypeName="phone_storeModel.productdetail">
+            <EntityTypeMapping TypeName="dotnetstorephone.productdetail">
               <MappingFragment StoreEntitySet="productdetail">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="productId" ColumnName="productId" />
@@ -1523,19 +1451,8 @@ FROM `storage` AS `storage`</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="productlines">
-            <EntityTypeMapping TypeName="phone_storeModel.productline">
-              <MappingFragment StoreEntitySet="productline">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="brandId" ColumnName="brandId" />
-                <ScalarProperty Name="createDate" ColumnName="createDate" />
-                <ScalarProperty Name="createUpdate" ColumnName="createUpdate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="roles">
-            <EntityTypeMapping TypeName="phone_storeModel.role">
+            <EntityTypeMapping TypeName="dotnetstorephone.role">
               <MappingFragment StoreEntitySet="role">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="roleName" ColumnName="roleName" />
@@ -1547,7 +1464,7 @@ FROM `storage` AS `storage`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="roleusers">
-            <EntityTypeMapping TypeName="phone_storeModel.roleuser">
+            <EntityTypeMapping TypeName="dotnetstorephone.roleuser">
               <MappingFragment StoreEntitySet="roleuser">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
@@ -1559,7 +1476,7 @@ FROM `storage` AS `storage`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="specs">
-            <EntityTypeMapping TypeName="phone_storeModel.spec">
+            <EntityTypeMapping TypeName="dotnetstorephone.spec">
               <MappingFragment StoreEntitySet="spec">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="activeFlag" ColumnName="activeFlag" />
@@ -1569,7 +1486,7 @@ FROM `storage` AS `storage`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="specdetails">
-            <EntityTypeMapping TypeName="phone_storeModel.specdetail">
+            <EntityTypeMapping TypeName="dotnetstorephone.specdetail">
               <MappingFragment StoreEntitySet="specdetail">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="specId" ColumnName="specId" />
@@ -1581,8 +1498,20 @@ FROM `storage` AS `storage`</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="storages">
+            <EntityTypeMapping TypeName="dotnetstorephone.storage">
+              <MappingFragment StoreEntitySet="storage">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="productDetailId" ColumnName="productDetailId" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="activeFlag" ColumnName="activeFlag" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="users">
-            <EntityTypeMapping TypeName="phone_storeModel.user">
+            <EntityTypeMapping TypeName="dotnetstorephone.user">
               <MappingFragment StoreEntitySet="users">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="username" ColumnName="username" />
@@ -1596,7 +1525,7 @@ FROM `storage` AS `storage`</DefiningQuery>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="vouchers">
-            <EntityTypeMapping TypeName="phone_storeModel.voucher">
+            <EntityTypeMapping TypeName="dotnetstorephone.voucher">
               <MappingFragment StoreEntitySet="voucher">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -1605,18 +1534,6 @@ FROM `storage` AS `storage`</DefiningQuery>
                 <ScalarProperty Name="productId" ColumnName="productId" />
                 <ScalarProperty Name="productVoucherId" ColumnName="productVoucherId" />
                 <ScalarProperty Name="percentage" ColumnName="percentage" />
-                <ScalarProperty Name="activeFlag" ColumnName="activeFlag" />
-                <ScalarProperty Name="createDate" ColumnName="createDate" />
-                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="storages">
-            <EntityTypeMapping TypeName="phone_storeModel.storage">
-              <MappingFragment StoreEntitySet="storage">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="productDetailId" ColumnName="productDetailId" />
-                <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="activeFlag" ColumnName="activeFlag" />
                 <ScalarProperty Name="createDate" ColumnName="createDate" />
                 <ScalarProperty Name="updateDate" ColumnName="updateDate" />
