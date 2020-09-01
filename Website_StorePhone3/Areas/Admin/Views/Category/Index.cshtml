@@ -3,7 +3,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
 }
-@model IEnumerable<Website_StorePhone3.Models.DB.brand>
+@model IEnumerable<Website_StorePhone3.Models.DB.category>
 <ul class="nav nav-list">
     <li class="">
         <a href="index.html">
@@ -68,7 +68,7 @@
         </ul>
     </li>
 
-    <li class="">
+    <li class="active">
         <a href="#" class="dropdown-toggle">
             <i class="menu-icon fa fa-list"></i>
             <span class="menu-text"> Quản Lý Danh Mục </span>
@@ -79,19 +79,19 @@
         <b class="arrow"></b>
 
         <ul class="submenu">
-            <li class="">
+            <li class="active">
                 @* <a href="manage_user.html">
-                <i class="menu-icon fa fa-caret-right"></i>
-                Loại danh mục
-            </a>*@
-                @Html.ActionLink("Loại danh mục", "Index", "Category")
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Loại danh mục
+                    </a>*@
+                @Html.ActionLink("Loại danh mục", "manager_user", "HomeAdmin")
                 <b class="arrow"></b>
             </li>
             <li class="">
                 @* <a href="add_supplier.html">
-                <i class="menu-icon fa fa-caret-right"></i>
-                Thêm nhà sản xuất
-            </a>*@
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Thêm nhà sản xuất
+                    </a>*@
                 @Html.ActionLink("Thêm danh mục", "addCategory", "Category")
                 <b class="arrow"></b>
             </li>
@@ -101,7 +101,7 @@
         </ul>
     </li>
 
-    <li class="active">
+    <li class="">
         <a href="#" class="dropdown-toggle">
             <i class="menu-icon fa fa-pencil-square-o"></i>
             <span class="menu-text">Quản lý nhà sản xuất</span>
@@ -113,7 +113,7 @@
         <b class="arrow"></b>
         <ul class="submenu">
 
-            <li class="active">
+            <li class="">
                 @*   <a href="profile_supplier.html">
                         <i class="menu-icon fa fa-caret-right"></i>
                         Thông tin nhà sản xuất
@@ -224,9 +224,9 @@
                 </li>
 
                 <li>
-                    <a href="index.html">Quản lý nhà sản xuất</a>
+                    <a href="index.html">Quản lý danh mục</a>
                 </li>
-                <li class="active">Thông tin nhà sản xuất</li>
+                <li class="active">Thông tin danh mục</li>
             </ul><!-- /.breadcrumb -->
 
             <div class="nav-search" id="nav-search">
@@ -244,10 +244,10 @@
 
             <div class="page-header">
                 <h1>
-                    Nhà sản xuất
+                    Danh mục
                     <small>
                         <i class="ace-icon fa fa-angle-double-right"></i>
-                        Thông tin các nhà sản xuất
+                        Thông tin các danh mục
                     </small>
                 </h1>
             </div><!-- /.page-header -->
@@ -272,8 +272,8 @@
                                                 </label>
                                             </th>
                                             <th>Id</th>
-                                            <th>Logo</th>
-                                            <th>Tên nhà sản xuất</th>
+                                            
+                                            <th>Tên danh mục</th>
 
                                             <th>
                                                 <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
@@ -306,7 +306,7 @@
 
 
                                                     <td>@item.id</td>
-                                                    <td><img style="max-height:60px" src="~/@item.logo" alt="@item.name" /></td>
+                                                   
                                                     <td class="hidden-480">@item.name</td>
                                                     <!--                                            <td>Thành viên</td>-->
 
@@ -323,16 +323,16 @@
                                                         <div class="hidden-sm hidden-xs action-buttons">
 
                                                             <a class="green" href="@Url.Action("Edit/"+item.id)">
-                                                           <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                                          </a>
-                                                          @*  @Html.ActionLink("Edit", "Edit", new { id = item.id })*@
+                                                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                                            </a>
+                                                            @*  @Html.ActionLink("Edit", "Edit", new { id = item.id })*@
 
                                                             <a class="red" href="@Url.Action("Delete/"+item.id)" onclick="return confirm('Bạn chắc chắn xóa? '+'@item.name');">
                                                                 <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                                                              
+
                                                             </a>
                                                             @*@Html.ActionLink("Delete", "Delete", new { id = item.id})*@
-                                                           
+
                                                         </div>
 
 
@@ -362,4 +362,6 @@
     });
 
 </script>
+
+
 

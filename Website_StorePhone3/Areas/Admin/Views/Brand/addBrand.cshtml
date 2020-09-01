@@ -81,13 +81,20 @@
         <ul class="submenu">
             <li class="">
                 @* <a href="manage_user.html">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        Loại danh mục
-                    </a>*@
-                @Html.ActionLink("Loại danh mục", "manager_user", "HomeAdmin")
+                <i class="menu-icon fa fa-caret-right"></i>
+                Loại danh mục
+            </a>*@
+                @Html.ActionLink("Loại danh mục", "Index", "Category")
                 <b class="arrow"></b>
             </li>
-
+            <li class="">
+                @* <a href="add_supplier.html">
+                <i class="menu-icon fa fa-caret-right"></i>
+                Thêm nhà sản xuất
+            </a>*@
+                @Html.ActionLink("Thêm danh mục", "addCategory", "Category")
+                <b class="arrow"></b>
+            </li>
 
         </ul>
     </li>
